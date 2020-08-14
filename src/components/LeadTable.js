@@ -13,7 +13,7 @@ function LeadTable(props) {
     const [data, setData] = useState([]);
     const [text, setText] = useState({});
     useEffect(() => {
-        axios.get('http://54.196.209.5:4059/api/leads/')
+        axios.get('http://3.231.222.231:4059/api/leads/')
             .then(res => res.data)
             .then(data => setData(data))
             .catch(err => console.log(err))
@@ -25,7 +25,7 @@ function LeadTable(props) {
     }
     const handleShowUpdate = (id) => {
         setID(id);
-        axios.get(`http://54.196.209.5:4059/api/leads/${id}`)
+        axios.get(`http://3.231.222.231:4059/api/leads/${id}`)
             .then(res => res.data)
             .then(data => {
                 setText({"communication": data.communication})
@@ -37,7 +37,7 @@ function LeadTable(props) {
         setShowDelete(false);
     }
     const handleSave = () => {
-        axios.put(`http://54.196.209.5:4059/api/mark_lead/${id}`, text)
+        axios.put(`http://3.231.222.231:4059/api/mark_lead/${id}`, text)
             .then(res => {
                 if (res.status === 202) {
                     setShowUpdate(false);
@@ -46,7 +46,7 @@ function LeadTable(props) {
             .catch(err => console.log('err---->', err))
     }
     const handleDelete = () => {
-        axios.delete(`http://54.196.209.5:4059/api/leads/${id}`)
+        axios.delete(`http://3.231.222.231:4059/api/leads/${id}`)
             .then(res => {
                 if (res.status === 204) {
                     setUpdateDelete(true);
@@ -57,48 +57,52 @@ function LeadTable(props) {
     }
     return (
         <div>
-            <Table striped bordered hover>
-                <thead style={{backgroundColor: "black", color: "white"}}>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Mobile Num</th>
-                    <th>Location Type</th>
-                    <th>Location String</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                {data.map((lead, ind) => (
-                    <tr key={ind}>
-                        <td>{`${lead.first_name} ${lead.last_name}`}</td>
-                        <td>{lead.email}</td>
-                        <td>{lead.mobile}</td>
-                        <td>{lead.location_type}</td>
-                        <td>{lead.location_string}</td>
-                        <td>
-
-                            <Button variant="dark" size="lg" onClick={() => handleShowUpdate(lead.id)}>
-                                Mark Update
-                            </Button>
-                            &nbsp;&nbsp;&nbsp;
-                            <Button variant="dark" size="lg" onClick={() => handleShowDelete(lead.id)}>
-                                Delete
-                            </Button>
-                        </td>
+            <div>
+                <Table className={'leads_table'} striped bordered hover>
+                    <thead style={{backgroundColor: "black", color: "white"}}>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Mobile Num</th>
+                        <th>Location Type</th>
+                        <th>Location String</th>
+                        <th>Action</th>
                     </tr>
-                ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                    {data.map((lead, ind) => (
+                        <tr key={ind}>
+                            <td>{`${lead.first_name} ${lead.last_name}`}</td>
+                            <td>{lead.email}</td>
+                            <td>{lead.mobile}</td>
+                            <td>{lead.location_type}</td>
+                            <td>{lead.location_string}</td>
+                            <td>
 
-            <Modal size={"sm"} show={showDelete} onHide={handleHide} animation={false} centered>
+                                <Button className={'update_lead_modal_btn'} variant="dark" size="lg"
+                                        onClick={() => handleShowUpdate(lead.id)}>
+                                    Mark Update
+                                </Button>
+                                &nbsp;&nbsp;&nbsp;
+                                <Button className={'delete_lead_modal_btn'} variant="dark" size="lg"
+                                        onClick={() => handleShowDelete(lead.id)}>
+                                    Delete
+                                </Button>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </Table>
+            </div>
+            <Modal className={'delete_lead_form'} size={"sm"} show={showDelete} onHide={handleHide} animation={false}
+                   centered>
                 <Modal.Header style={{backgroundColor: "black", color: "white"}}>
                     <Modal.Title id="contained-modal-title-vcenter">
                         Do you wish to delete this lead?
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{display: "flex", alignItems: "center", justifyContent: "center", padding: "2em"}}>
-                    <Button variant="danger" size="lg" onClick={handleDelete}>
+                    <Button className={'delete_lead_btn'} variant="danger" size="lg" onClick={handleDelete}>
                         delete
                     </Button>
                     &nbsp;&nbsp;&nbsp;
@@ -109,7 +113,8 @@ function LeadTable(props) {
             </Modal>
 
 
-            <Modal size={"sm"} show={showUpdate} onHide={handleHide} animation={false} centered>
+            <Modal className={'update_lead_form'} size={"sm"} show={showUpdate} onHide={handleHide} animation={false}
+                   centered>
                 <Modal.Header style={{backgroundColor: "black", color: "white"}}>
                     <Modal.Title>
                         Mark Communication
@@ -131,7 +136,7 @@ function LeadTable(props) {
                     <Button variant="secondary" onClick={handleHide}>
                         Close
                     </Button>
-                    <Button variant="primary" type={"submit"} onClick={handleSave}>
+                    <Button className={'update_lead_btn'} variant="primary" type={"submit"} onClick={handleSave}>
                         Save
                     </Button>
                 </Modal.Footer>
