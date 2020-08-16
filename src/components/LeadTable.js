@@ -70,7 +70,7 @@ function LeadTable(props) {
                         <th>Action</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody className={'leads_table'}>
                     {data.map((lead, ind) => (
                         <tr key={ind}>
                             <td>{`${lead.first_name} ${lead.last_name}`}</td>
