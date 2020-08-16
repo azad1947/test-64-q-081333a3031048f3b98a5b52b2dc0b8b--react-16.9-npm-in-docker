@@ -6,6 +6,7 @@ import axios from "axios";
 import Form from "react-bootstrap/cjs/Form";
 
 function LeadTable(props) {
+    const ip = '204.236.195.77:4000'
     const [showDelete, setShowDelete] = useState(false);
     const [updateDelete, setUpdateDelete] = useState(false);
     const [showUpdate, setShowUpdate] = useState(false);
@@ -13,7 +14,7 @@ function LeadTable(props) {
     const [data, setData] = useState([]);
     const [text, setText] = useState({});
     useEffect(() => {
-        axios.get('http://3.231.222.231:4059/api/leads/')
+        axios.get(`http://${ip}/api/leads/`)
             .then(res => res.data)
             .then(data => setData(data))
             .catch(err => console.log(err))
@@ -25,7 +26,7 @@ function LeadTable(props) {
     }
     const handleShowUpdate = (id) => {
         setID(id);
-        axios.get(`http://3.231.222.231:4059/api/leads/${id}`)
+        axios.get(`http://${ip}/api/leads/${id}`)
             .then(res => res.data)
             .then(data => {
                 setText({"communication": data.communication})
@@ -37,7 +38,7 @@ function LeadTable(props) {
         setShowDelete(false);
     }
     const handleSave = () => {
-        axios.put(`http://3.231.222.231:4059/api/mark_lead/${id}`, text)
+        axios.put(`http://${ip}/api/mark_lead/${id}`, text)
             .then(res => {
                 if (res.status === 202) {
                     setShowUpdate(false);
@@ -46,7 +47,7 @@ function LeadTable(props) {
             .catch(err => console.log('err---->', err))
     }
     const handleDelete = () => {
-        axios.delete(`http://3.231.222.231:4059/api/leads/${id}`)
+        axios.delete(`http://${ip}/api/leads/${id}`)
             .then(res => {
                 if (res.status === 204) {
                     setUpdateDelete(true);

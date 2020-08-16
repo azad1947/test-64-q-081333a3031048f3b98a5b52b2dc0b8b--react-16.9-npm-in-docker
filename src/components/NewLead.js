@@ -11,6 +11,7 @@ import '../App.css'
 import _ from 'lodash';
 
 function NewLead() {
+    const ip = '204.236.195.77:4000'
     const [show, setShow] = useState(false);
     const [update, setUpdate] = useState(false);
     const handleClose = () => setShow(false);
@@ -43,7 +44,7 @@ function NewLead() {
                         }}
                         validationSchema={validateSchema}
                         onSubmit={(values, {setSubmitting}) => {
-                            axios.post('http://3.231.222.231:4059/api/leads/', values)
+                            axios.post(`http://${ip}/api/leads/`, values)
                                 .then(res => {
                                     console.log('values--->', values);
                                     console.log('res--->', res);
