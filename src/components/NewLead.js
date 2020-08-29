@@ -9,9 +9,8 @@ import axios from 'axios';
 import LeadTable from "./LeadTable";
 import '../App.css'
 import _ from 'lodash';
-
+require('dotenv').config();
 function NewLead() {
-    const ip = '204.236.195.77:4000'
     const [show, setShow] = useState(false);
     const [update, setUpdate] = useState(false);
     const handleClose = () => setShow(false);
@@ -44,7 +43,7 @@ function NewLead() {
                         }}
                         validationSchema={validateSchema}
                         onSubmit={(values, {setSubmitting}) => {
-                            axios.post(`http://${ip}/api/leads/`, values)
+                            axios.post(process.env.REACT_APP_API_URL+'/api/leads/', values)
                                 .then(res => {
                                     console.log('values--->', values);
                                     console.log('res--->', res);
