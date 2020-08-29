@@ -4,9 +4,9 @@ import Button from "react-bootstrap/cjs/Button";
 import Modal from "react-bootstrap/cjs/Modal";
 import axios from "axios";
 import Form from "react-bootstrap/cjs/Form";
+require('dotenv').config();
 
 function LeadTable(props) {
-    const ip = '204.236.195.77:4000'
     const [showDelete, setShowDelete] = useState(false);
     const [updateDelete, setUpdateDelete] = useState(false);
     const [showUpdate, setShowUpdate] = useState(false);
@@ -14,19 +14,19 @@ function LeadTable(props) {
     const [data, setData] = useState([]);
     const [text, setText] = useState({});
     useEffect(() => {
-        axios.get(`http://${ip}/api/leads/`)
+        axios.get(process.env.REACT_APP_API_URL+'/api/leads/')
             .then(res => res.data)
             .then(data => setData(data))
             .catch(err => console.log(err))
     }, [props.update, updateDelete]);
-
+    console.log('data------->',data)
     const handleShowDelete = (id) => {
         setID(id);
         setShowDelete(true);
     }
     const handleShowUpdate = (id) => {
         setID(id);
-        axios.get(`http://${ip}/api/leads/${id}`)
+        axios.get(process.env.REACT_APP_API_URL+`/api/leads/${id}`)
             .then(res => res.data)
             .then(data => {
                 setText({"communication": data.communication})
@@ -38,7 +38,7 @@ function LeadTable(props) {
         setShowDelete(false);
     }
     const handleSave = () => {
-        axios.put(`http://${ip}/api/mark_lead/${id}`, text)
+        axios.put(process.env.REACT_APP_API_URL+`/api/mark_lead/${id}`, text)
             .then(res => {
                 if (res.status === 202) {
                     setShowUpdate(false);
@@ -47,7 +47,7 @@ function LeadTable(props) {
             .catch(err => console.log('err---->', err))
     }
     const handleDelete = () => {
-        axios.delete(`http://${ip}/api/leads/${id}`)
+        axios.delete(process.env.REACT_APP_API_URL+`/api/leads/${id}`)
             .then(res => {
                 if (res.status === 204) {
                     setUpdateDelete(true);
